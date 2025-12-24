@@ -23,6 +23,10 @@ class TransmissionLineCalculator:
         self.results = ResultGroup("Results")
         self._dim1_label = None
         self._dim2_label = None
+        self._dim1_input = None
+        self._dim2_input = None
+        self._permit_field = None
+        self._permea_field = None
 
     def _update_labels(self):
         """Update dimension labels based on line type."""
@@ -65,6 +69,14 @@ class TransmissionLineCalculator:
         self.dimension2 = None
         self.permittivity = 1.0
         self.permeability = 1.0
+        if self._dim1_input:
+            self._dim1_input.set_value(None)
+        if self._dim2_input:
+            self._dim2_input.set_value(None)
+        if self._permit_field:
+            self._permit_field.set_value(1.0)
+        if self._permea_field:
+            self._permea_field.set_value(1.0)
         self.results.clear_all()
 
     def render(self):

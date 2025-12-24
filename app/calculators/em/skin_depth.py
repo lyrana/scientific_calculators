@@ -20,6 +20,9 @@ class SkinDepthCalculator:
         self.permeability = 1.0
         self.conductivity = None
         self.results = ResultGroup("Results")
+        self._input_field = None
+        self._permea_field = None
+        self._conduct_field = None
 
     def calculate(self):
         """Perform the calculation."""
@@ -51,6 +54,12 @@ class SkinDepthCalculator:
         self.input_value = None
         self.permeability = 1.0
         self.conductivity = None
+        if self._input_field:
+            self._input_field.set_value(None)
+        if self._permea_field:
+            self._permea_field.set_value(1.0)
+        if self._conduct_field:
+            self._conduct_field.set_value(None)
         self.results.clear_all()
 
     def render(self):
@@ -70,7 +79,7 @@ class SkinDepthCalculator:
                 ).classes('w-64')
 
                 # Input value
-                ui.number(
+                self._input_field = ui.number(
                     label="Value",
                     value=self.input_value,
                     on_change=lambda e: setattr(self, 'input_value', e.value),
@@ -79,13 +88,13 @@ class SkinDepthCalculator:
 
                 # Material properties
                 with ui.row().classes('gap-4'):
-                    ui.number(
+                    self._permea_field = ui.number(
                         label="Relative Permeability (μ_r)",
                         value=self.permeability,
                         on_change=lambda e: setattr(self, 'permeability', e.value),
                     ).classes('w-48')
 
-                    ui.number(
+                    self._conduct_field = ui.number(
                         label="Conductivity (S/m)",
                         value=self.conductivity,
                         on_change=lambda e: setattr(self, 'conductivity', e.value),

@@ -15,6 +15,7 @@ class PlasmaFrequencyCalculator:
     def __init__(self):
         self.electron_density = None
         self.results = ResultGroup("Results")
+        self._density_input = None
 
     def calculate(self):
         if self.electron_density is None:
@@ -30,12 +31,14 @@ class PlasmaFrequencyCalculator:
 
     def reset(self):
         self.electron_density = None
+        if self._density_input:
+            self._density_input.set_value(None)
         self.results.clear_all()
 
     def render(self):
         with calculator_card("Electron Plasma Frequency", "ω_pe = 8978 × √n_e"):
             with ui.column().classes('gap-4 w-full'):
-                ui.number(
+                self._density_input = ui.number(
                     label="Electron Density (cm⁻³)",
                     value=self.electron_density,
                     on_change=lambda e: setattr(self, 'electron_density', e.value),
